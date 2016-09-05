@@ -1,0 +1,14 @@
+{
+  "name": "Show And Hide Outdated Diffs On Github",
+  "description": "Change the current outdated diff state",
+  "version": "1.4",
+  "permissions": [
+    "https://github.com/*"
+  ],
+  "background": { "scripts": ["background.js"] },
+  "browser_action": {
+      "name": "Show or hide outdated diffs",
+      "default_title": "Show or hide outdated diffs"
+  },
+  "manifest_version": 2
+}
