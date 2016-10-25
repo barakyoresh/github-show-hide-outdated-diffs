@@ -1,7 +1,7 @@
 {
   "name": "Show And Hide Outdated Diffs On Github",
   "description": "Change the current outdated diff state",
-  "version": "1.4",
+  "version": "1.5",
   "permissions": [
     "https://github.com/*"
   ],
