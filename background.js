@@ -11,15 +11,13 @@ function updateShowState() {
   if (current > 1) {
   	current = 0;
   	chrome.tabs.executeScript(null, { file: "jquery-2.1.4.js" }, function() {
-		chrome.tabs.executeScript(null, { code:"$('.outdated-diff-comment-container').addClass('open');" });
-	});
+			chrome.tabs.executeScript(null, { code:"$('.outdated-comment').addClass('open');" });
+		});
   } else {
   	chrome.tabs.executeScript(null, { file: "jquery-2.1.4.js" }, function() {
-		chrome.tabs.executeScript(null, { code:"$('.outdated-diff-comment-container').removeClass('open');" });
-	});
+			chrome.tabs.executeScript(null, { code:"$('.outdated-comment').removeClass('open');" });
+		});
   }
-
-    
 }
 
 chrome.browserAction.onClicked.addListener(updateShowState);
