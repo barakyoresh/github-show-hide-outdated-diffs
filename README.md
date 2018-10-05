@@ -1,2 +1,3 @@
-# github-show-hide-outdated-diffs
-Chrome extension to show and hide outdated diffs on Github.
+# Github outdated comments toggle.
+
+Chrome extension to show and hide outdated comments on Github pull requests.

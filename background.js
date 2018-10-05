@@ -1,24 +1,39 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-var current = 0;
+const ICON_DIRECTORY = './icons/'
+const ICON_SHOW = 'show.png'
+const ICON_HIDE = 'hide.png'
 
 function updateShowState() {
-  chrome.browserAction.setIcon({path:"icon" + current + ".png"});
-  current++;
-
-  if (current > 1) {
-  	current = 0;
-  	chrome.tabs.executeScript(null, { file: "jquery-2.1.4.js" }, function() {
-			chrome.tabs.executeScript(null, { code:"$('.outdated-comment').addClass('open');" });
-		});
-  } else {
-  	chrome.tabs.executeScript(null, { file: "jquery-2.1.4.js" }, function() {
-			chrome.tabs.executeScript(null, { code:"$('.outdated-comment').removeClass('open');" });
-		});
-  }
+	chrome.tabs.executeScript({file: 'comments.js'})
 }
 
-chrome.browserAction.onClicked.addListener(updateShowState);
-updateShowState();
+function updateIcon(value) {
+	let icon = value ? ICON_HIDE : ICON_SHOW
+	chrome.browserAction.setIcon({path: ICON_DIRECTORY + icon})
+}
+
+function updateStorageState(tabId, value) {
+	chrome.storage.local.set({[tabId]: value}, () => updateIcon(value))
+}
+
+function handleMessage(request, sender, sendResponse) {
+	let action = request.action
+	let tabId = sender.tab.id.toString()
+	if (action === 'init') {
+		updateStorageState(tabId, false)
+	}
+	else if (action === 'get') {
+		chrome.storage.local.get(tabId, result => sendResponse({currentStatus: result[tabId]}))
+	}
+	else if (action === 'update') {
+		let updatedStatus = request.updatedStatus
+		updateStorageState(tabId, updatedStatus)
+	}
+	return true
+}
+
+chrome.tabs.onActivated.addListener(activeInfo => {
+	let activeTabId = activeInfo.tabId.toString()
+	chrome.storage.local.get(activeTabId, result => updateIcon(result[activeTabId]))
+})
+chrome.browserAction.onClicked.addListener(updateShowState)
+chrome.runtime.onMessage.addListener(handleMessage)
