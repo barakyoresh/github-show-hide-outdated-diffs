@@ -1,14 +1,26 @@
 {
   "name": "Show And Hide Outdated Diffs On Github",
   "description": "Change the current outdated diff state",
-  "version": "1.5",
+  "version": "2.0",
   "permissions": [
-    "https://github.com/*"
+    "https://github.com/*",
+    "storage",
+    "activeTab",
+    "background",
+    "tabs"
   ],
-  "background": { "scripts": ["background.js"] },
+  "background": { 
+    "scripts": [ "background.js" ] 
+  },
+  "content_scripts": [
+    {
+      "matches": [ "https://github.com/*" ],
+      "js": [ "initState.js" ]
+    }
+  ],
   "browser_action": {
-      "name": "Show or hide outdated diffs",
-      "default_title": "Show or hide outdated diffs"
+      "name": "Show or hide outdated comments",
+      "default_title": "Show or hide outdated comments"
   },
   "manifest_version": 2
 }
